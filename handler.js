@@ -26,7 +26,6 @@ exports.generator = async (event) => {
   };
 
   console.log(event);
-  console.log(presignedUrl);
 
   return {
     statusCode: 200,

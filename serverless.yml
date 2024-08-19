@@ -12,3 +12,5 @@ provider:
 functions:
   hello:
     handler: handler.generator
+    environment:
+      BUCKET_NAME: t-techevents-images
