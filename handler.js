@@ -3,13 +3,13 @@ const aws = require('aws-sdk');
 
 exports.generator = async (event) => {
 
-  const key = `${uuid.v4()}.png`;
+  const key = `${uuid.v4()}.${event.queryStringParameters.key}`;
   const s3 = new aws.S3();
 
   const params = {
     Bucket: process.env.BUCKET_NAME,
     Key: key,
-    ContentType: 'application/png',
+    ContentType: event.queryStringParameters.contentType,
     Expires: 30,
   };
 
