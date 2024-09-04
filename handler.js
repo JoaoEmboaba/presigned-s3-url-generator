@@ -3,7 +3,7 @@ const aws = require('aws-sdk');
 
 exports.generator = async (event) => {
 
-  const key = `${uuid.v4()}.${event.queryStringParameters.key}`;
+  const key = `${event.queryStringParameters.fileName}.${event.queryStringParameters.key}`;
   const s3 = new aws.S3();
 
   const params = {
