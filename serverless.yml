@@ -13,4 +13,4 @@ functions:
   hello:
     handler: handler.generator
     environment:
-      BUCKET_NAME: uploader-app-bucket
+      BUCKET_NAME: nome-do-bucket
