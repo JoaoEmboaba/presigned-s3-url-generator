@@ -4,7 +4,9 @@ const aws = require('aws-sdk');
 exports.generator = async (event) => {
 
   const key = `${event.queryStringParameters.fileName}.${event.queryStringParameters.key}`;
-  const s3 = new aws.S3();
+  const s3 = new aws.S3({
+    signatureVersion: 'v4',
+  });
 
   const putParams = {
     Bucket: process.env.BUCKET_NAME,
@@ -16,7 +18,7 @@ exports.generator = async (event) => {
   const getParams = {
     Bucket: process.env.BUCKET_NAME,
     Key: key,
-    Expires: 60,
+    Expires: 300,
   };
 
   let presignedUrl;
