@@ -14,3 +14,4 @@ functions:
     handler: handler.generator
     environment:
       BUCKET_NAME: nome-do-bucket
+      KMS_KEY_ID: id-da-chave-kms
