@@ -1,10 +1,8 @@
-const uuid = require("uuid");
-const aws = require("aws-sdk");
+import { S3 } from "aws-sdk";
 
-exports.generator = async (event) => {
+export async function generator(event) {
   const key = `${event.queryStringParameters.fileName}.${event.queryStringParameters.key}`;
-  const kms = new aws.KMS();
-  const s3 = new aws.S3({
+  const s3 = new S3({
     signatureVersion: "v4",
   });
 
@@ -30,7 +28,6 @@ exports.generator = async (event) => {
     switch (event.queryStringParameters.operationType) {
       case "putObject":
         presignedUrl = await s3.getSignedUrlPromise("putObject", putParams);
-        await rotateCustomKey();
         break;
       case "getObject":
         presignedUrl = await s3.getSignedUrlPromise("getObject", getParams);
@@ -44,20 +41,6 @@ exports.generator = async (event) => {
     };
   }
 
-  async function rotateCustomKey() {
-    const params = {
-      KeyId: process.env.KMS_KEY_ID,
-    };
-
-    try {
-      await kms.enableKeyRotation(params).promise();
-      console.log("Chave KMS rotacionada com sucesso.");
-    } catch (error) {
-      console.error("Erro ao rotacionar a chave KMS:", error);
-      throw error;
-    }
-  }
-
   console.log(event);
 
   return {
@@ -67,4 +50,4 @@ exports.generator = async (event) => {
       key,
     }),
   };
-};
+}
