@@ -1,8 +1,5 @@
-# "org" ensures this Service is used with the correct Serverless Framework Access Key.
 org: jemboaba
-# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
 app: gen-s3-signed-url
-# "service" is the name of this project. This will also be added to your AWS resource names.
 service: presigned-url-generator
 
 provider:
@@ -13,5 +10,4 @@ functions:
   hello:
     handler: handler.generator
     environment:
-      BUCKET_NAME: nome-do-bucket
-      KMS_KEY_ID: id-da-chave-kms
+      BUCKET_NAME: NOME-DO-BUCKET
