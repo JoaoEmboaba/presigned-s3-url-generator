@@ -1,18 +1,12 @@
-const uuid = require("uuid");
 const aws = require("aws-sdk");
 
 exports.generator = async (event) => {
   const key = `${event.queryStringParameters.fileName}.${event.queryStringParameters.key}`;
-  const kms = new aws.KMS();
-  const s3 = new aws.S3({
-    signatureVersion: "v4",
-  });
+  const s3 = new aws.S3();
 
   const putParams = {
     Bucket: process.env.BUCKET_NAME,
     Key: key,
-    ServerSideEncryption: "aws:kms",
-    SSEKMSKeyId: process.env.KMS_KEY_ID,
     ContentType: event.queryStringParameters.contentType,
     BucketKeyEnabled: true,
     Expires: 30,
@@ -42,20 +36,6 @@ exports.generator = async (event) => {
       statusCode: 500,
       body: JSON.stringify({ error: "Falha ao gerar a URL pré assinada" }),
     };
-  }
-
-  async function rotateCustomKey() {
-    const params = {
-      KeyId: process.env.KMS_KEY_ID,
-    };
-
-    try {
-      await kms.enableKeyRotation(params).promise();
-      console.log("Chave KMS rotacionada com sucesso.");
-    } catch (error) {
-      console.error("Erro ao rotacionar a chave KMS:", error);
-      throw error;
-    }
   }
 
   console.log(event);
