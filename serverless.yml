@@ -11,4 +11,3 @@ functions:
     handler: handler.generator
     environment:
       BUCKET_NAME: NOME-DO-BUCKET
-      KMS_KEY_ID: ID-CHAVE-KMS
