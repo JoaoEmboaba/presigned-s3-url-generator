@@ -24,7 +24,6 @@ exports.generator = async (event) => {
     switch (event.queryStringParameters.operationType) {
       case "putObject":
         presignedUrl = await s3.getSignedUrlPromise("putObject", putParams);
-        await rotateCustomKey();
         break;
       case "getObject":
         presignedUrl = await s3.getSignedUrlPromise("getObject", getParams);
