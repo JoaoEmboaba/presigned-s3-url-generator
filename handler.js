@@ -2,15 +2,11 @@ import { S3 } from "aws-sdk";
 
 export async function generator(event) {
   const key = `${event.queryStringParameters.fileName}.${event.queryStringParameters.key}`;
-  const s3 = new S3({
-    signatureVersion: "v4",
-  });
+  const s3 = new S3();
 
   const putParams = {
     Bucket: process.env.BUCKET_NAME,
     Key: key,
-    ServerSideEncryption: "aws:kms",
-    SSEKMSKeyId: process.env.KMS_KEY_ID,
     ContentType: event.queryStringParameters.contentType,
     BucketKeyEnabled: true,
     Expires: 30,
