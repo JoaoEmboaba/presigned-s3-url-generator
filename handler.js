@@ -1,5 +1,10 @@
 const aws = require("aws-sdk");
 
+const OBJECT_GET_EXPIRES_TTL = 300;
+const OBJECT_PUT_EXPIRES_TTL = 30;
+const ERROR_STATUS_CODE = 500;
+const SUCCESS_STATUS_CODE = 200;
+
 exports.generator = async (event) => {
   const key = `${event.queryStringParameters.fileName}.${event.queryStringParameters.key}`;
   const s3 = new aws.S3();
@@ -9,13 +14,13 @@ exports.generator = async (event) => {
     Key: key,
     ContentType: event.queryStringParameters.contentType,
     BucketKeyEnabled: true,
-    Expires: 30,
+    Expires: OBJECT_PUT_EXPIRES_TTL,
   };
 
   const getParams = {
     Bucket: process.env.BUCKET_NAME,
     Key: key,
-    Expires: 300,
+    Expires: OBJECT_GET_EXPIRES_TTL,
   };
 
   let presignedUrl;
@@ -32,7 +37,7 @@ exports.generator = async (event) => {
   } catch (error) {
     console.error("Não foi possível gerar a URL pré assinada", error);
     return {
-      statusCode: 500,
+      statusCode: ERROR_STATUS_CODE,
       body: JSON.stringify({ error: "Falha ao gerar a URL pré assinada" }),
     };
   }
@@ -40,7 +45,7 @@ exports.generator = async (event) => {
   console.log(event);
 
   return {
-    statusCode: 200,
+    statusCode: SUCCESS_STATUS_CODE,
     body: JSON.stringify({
       presignedUrl,
       key,
